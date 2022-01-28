@@ -1,18 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-def normal_hist(img, plot=True):
-    arr = np.zeros(256)
-    img = img.flatten()
-    np.add.at(arr,img,1)
-    arr = arr/img.shape[0]
-    if plot:
-        f = plt.figure()
-        ax = f.add_subplot(1,1,1)
-        ax.bar(np.arange(256),arr)
-    return arr, f if 'f' in locals() else None
 
-img = mpimg.imread('misc/5.1.11.tiff')
-count,plot = normal_hist(img)
-plot
+
+# setup the figure and axes
+fig = plt.figure(figsize=(8, 3))
+ax1 = fig.add_subplot(121, projection='3d')
+ax2 = fig.add_subplot(122, projection='3d')
+
+# fake data
+_x = np.arange(4)
+_y = np.arange(5)
+_xx, _yy = np.meshgrid(_x, _y)
+x, y = _xx.ravel(), _yy.ravel()
+
+top = x + y
+print(x)
+bottom = np.zeros_like(top)
+width = depth = 1
+
+ax1.bar3d(x, y, bottom, width, depth, top, shade=True)
+ax1.set_title('Shaded')
+
+ax2.bar3d(x, y, bottom, width, depth, top, shade=False)
+ax2.set_title('Not Shaded')
+
 plt.show()
