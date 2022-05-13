@@ -1,0 +1,119 @@
+% CVPR 2022 Paper Template
+% based on the CVPR template provided by Ming-Ming Cheng (https://github.com/MCG-NKU/CVPR_Template)
+% modified and extended by Stefan Roth (stefan.roth@NOSPAMtu-darmstadt.de)
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
+\usepackage[review]{cvpr}      % To produce the REVIEW version
+%\usepackage{cvpr}              % To produce the CAMERA-READY version
+%\usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
+
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+
+% It is strongly recommended to use hyperref, especially for the review version.
+% hyperref with option pagebackref eases the reviewers' job.
+% Please disable hyperref *only* if you encounter grave issues, e.g. with the
+% file validation for the camera-ready version.
+%
+% If you comment hyperref and then uncomment it, you should delete
+% ReviewTempalte.aux before re-running LaTeX.
+% (Or just hit 'q' on the first LaTeX run, let it finish, and you
+%  should be clear).
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+
+% Support for easy cross-referencing
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\cvprPaperID{47} % *** Enter the CVPR Paper ID here
+\def\confName{AI2100}
+\def\confYear{2022}
+
+
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+\title{Explaining answers given by neural question answering systems}
+
+
+\maketitle
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+Question answering has been a fundamental challenge in NLP with vast applications. State of the art neural question answering systems are able to beat humans at this task when evaluated on carefully prepared datasets. However it is difficult to explain in human comprehensible manner, how these models reach the answers that they do. Such an explanation is often important in high stakes situations such as healthcare or business applications. Thus we propose to explore explainability methods in the context of neural question answering through this project.
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\section{Introduction}
+\label{sec:intro}
+The proposed problem statement sits at the intersection of two fields: Question Answering and Explainable AI. Thus we will be briefly discussing each of them next. Individual discussion on both these topics will make it ample clear why they need to be pursued together.
+
+\subsection{Question Answering}
+\label{QAintro}
+Question answering (QA) is the task of providing accurate answers to questions posed in natural language. QA can be broadly studied under two categories: Open domain and Closed domain.
+
+Closed domain QA (also known as reading comprehension) is the task where the QA system is provided with a question and a corresponding text which may have the answer to the question. The QA system has to correctly find the answer from the text. Some popular datasets for this task are SQuAD 1.1 and SQuAD 2.0 datasets. Closed domain QA is of particular theoretical interest as it provides a measure for how well a system 'understands' text.
+
+Open domain QA is more general, in the sense that the QA system is not provided a corresponding text but has to perform additional information retrieval operations on public knowledge bases like Wikipedia or internet to find the relevant information. Such QA systems are of importance as they are already being integrated into search engines and voice assistants.
+
+\subsection{Explainable AI}
+\label{XAIintro}
+Explainable AI (XAI) seeks to understand how machine learning models arrive at their predictions. What might consist an explanation is debatable. However, it is popularly understood that XAI systems must follow four principles~\cite{Nist} set out by the National Institute of standards and technology:
+\begin{itemize}[itemsep=0.3pt]
+    \item \textbf{Explanation}: Systems deliver accompanying evidence or reason(s) for all outputs
+    \item \textbf{Meaningful}: Systems provide explanations that are understandable to individual users
+    \item \textbf{Explanation Accuracy}: The explanation correctly reflects the system’s process for generating the output 
+    \item \textbf{Knowledge Limits}: The system only operates under conditions for which it was designed or when the system reaches a sufficient confidence in its output
+\end{itemize}
+
+Explanations for machine learning models are important as they greatly help in building trust in the models. Such explanations can also pave the way to build better models in the future. 
+
+\section{Literature Review}
+\subsection{Methods in QA}
+In the early days, the question answering systems such as BASEBALL~\cite{BASEBALL}, SHRDLU~\cite{SHRDLU} were procedural, their knowledge bases were targeted at specific domain, the data needed to be carefully prepared by experts in the domain and they were not resilient to syntactic variations. Feedforward RNNs were popular for tasks requiring language inference in 1990s. Feedforward recurrent networks fail at encoding long term memory because of exploding or vanishing gradients. LSTM~\cite{LSTM} on the other hand maintains constant error backpropagation, and it generalises well with syntactic variations in the input. However, LSTMs are computationally inefficient, easy to overfit, and they tend to perform poorly on unseen words. Unseen words are usually common, since several word embedding implementations require a word to appear a minimum number of times owed to incorrect spellings in the corpus.
+
+BiDAF~\cite{BiDAF} handles the case of unseen words using character level embedding, which is a 1D-CNN used to find the vector representation of the unseen word by character decomposition. BiDAF also uses attention mechanism to focus on the words that might be important in the task. However like LSTM, BiDAF also suffers from being computationally inefficient.
+
+Transformer~\cite{Transformer} models build on the model of self-attention and get rid of RNN based models such as LSTM and replace it by multi-headed self-attention. This makes transformers parallelizable, and faster. 
+
+BERT~\cite{BERT} is a transformer based deep-learning model, which is currently being used in Google search queries. BERT is a bidirectional, self-supervised language representation model. It is pre-trained on a large corpus of plain-text, which is computationally expensive task. It can be fine tuned on small datasets for specific tasks, several models with fine tuning are also available in public domain such as RoBERTa~\cite{RoBERTa}.
+
+Recently, there have been some progress in using symbolic artificial intelligence with pre-trained deep learning models, the results of which outperform both the symbolic models, and the deep learning models in the context of Natural language inferencing~\cite{symbolic_deep_learning}.
+
+
+\subsection{Methods in Explainable AI}
+There are two common types of explanations given in XAI: intrinsic explanations and post hoc explanations.
+
+Intrinsic explanations rely on the interpretability of the model in use. For example, linear models and decision trees are considered inherently explainable. However, often deep learning models are not easily interpretable. Thus post hoc explanations tend to be more popular for deep learning models. 
+
+
+Post hoc explanations try to provide explanations for individual predictions of the model. They try to identify which part of the input was important for getting the output or what representations did the model learn for a particular input. For example, ~\cite{bert_attention} talks about how BERT's attention heads attend to linguistic notions like syntax and coreference, how attention heads in similar layer exhibit similar behaviour, etc.
+
+Some post hoc explainability approaches are model agnostic, and can be used for wide variety of ML models. LIME~\cite{lime} being one of them, tries to provide explanations by locally approximating the original model with surrogate interpretable model. Another set of explainability methods based on counterfactual examples~\cite{counterfactual} give explanations by coming up with an example input which is close to an original input data but resulting in a different output.
+
+Other post hoc explainabilty approaches specific to deep learning models try to compute input attribution by calculating gradients of the model's output with respect to input features. Saliency maps~\cite{Saliency} approximate the network as first order Taylor expansion, where the gradients are coefficients of features in the linear representation of model. Integrated Gradients~\cite{IG} is another attribution method primarily based on two axioms of Sensitivity and Implementation Invariance. It computes input attribution by taking integral of gradients along the path from a given baseline to input.
+
+\section{Conclusion}
+As alluded to in section~\ref{QAintro}, QA is often seen as a test of how much a model understands text. If a model truly understands a text and then answers questions based on the text, we expect it to be able to explain the reasons for the answers. This would serve as a better test of understanding. This reason in particular among other benefits of XAI encourages us to pursue explainability in QA. 
+
+
+%%%%%%%%% REFERENCES
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+
+\end{document}
